@@ -1,3 +1,7 @@
+.loading-img {
+  background: url(/img/6666.jpg) no-repeat center center;
+  background-size: cover;
+}
 /* 信息卡片彩带 */
 .author_top:hover {
   background: url(https://tuchuang.voooe.cn/images/2023/01/02/snow.gif);
