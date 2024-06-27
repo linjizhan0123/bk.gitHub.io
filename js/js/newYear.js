@@ -3,7 +3,7 @@ var newYear = () => {
     clearTimeout(newYearTimer);
     if (!document.querySelector('#newYear')) return;
     // 新年时间戳 and 星期对象
-    let newYear = new Date('2024-06-22 00:00:00').getTime() / 1000,
+    let newYear = new Date('2023-01-22 00:00:00').getTime() / 1000,
         week = { 0: '周日', 1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六' }
 
     time();
@@ -24,10 +24,10 @@ var newYear = () => {
         // 小于0则表示已经过年
         if (second < 0) {
             document.querySelector('#newYear .title').innerHTML = '春节倒计时!';
-            document.querySelector('#newYear .newYear-time').innerHTML = '<span class="happyNewYear">221</p>';
+            document.querySelector('#newYear .newYear-time').innerHTML = '<span class="happyNewYear">188天</p>';
         } else {
             // 大于0则还未过年
-            document.querySelector('#newYear .title').innerHTML = '距离2024年春节：'
+            document.querySelector('#newYear .title').innerHTML = '距离2025年春节：'
 
             // 大于一天则直接渲染天数
             if (second > 86400) {
