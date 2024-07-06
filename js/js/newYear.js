@@ -2,9 +2,13 @@ let newYearTimer = null;
 var newYear = () => {
     clearTimeout(newYearTimer);
     if (!document.querySelector('#newYear')) return;
-    // 新年时间戳 and 星期对象
-    let newYear = new Date('2023-01-22 00:00:00').getTime() / 1000,
-        week = { 0: '周日', 1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六' }
+
+    // 获取当前年份
+    let currentYear = new Date().getFullYear();
+    // 计算下一个春节的日期
+    let nextSpringFestival = new Date(currentYear + 1, 0, 22); // 春节在每年的1月22日
+    let newYear = nextSpringFestival.getTime() / 1000;
+    let week = { 0: '周日', 1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六' };
 
     time();
 
@@ -16,22 +20,35 @@ var newYear = () => {
         let now = new Date();
 
         // 右下角 今天
-        document.querySelector('#newYear .today').innerHTML = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' + week[now.getDay()]
+        document.querySelector('#newYear .today').innerHTML = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' + week[now.getDay()];
 
         // 现在与新年相差秒数
         let second = newYear - Math.round(now.getTime() / 1000);
 
         // 小于0则表示已经过年
         if (second < 0) {
-            document.querySelector('#newYear .title').innerHTML = '春节倒计时!';
-            document.querySelector('#newYear .newYear-time').innerHTML = '<span class="happyNewYear">188天</p>';
+            document.querySelector('#newYear .title').innerHTML = 'Happy New Year!';
+            document.querySelector('#newYear .newYear-time').innerHTML = '<span class="happyNewYear">新年快乐</span>';
+            // 春节当天飘落元宝
+            if (now.getFullYear() === nextSpringFestival.getFullYear() && now.getMonth() === nextSpringFestival.getMonth() && now.getDate() === nextSpringFestival.getDate()) {
+                jQuery(document).ready(function ($) {
+                    $('#newYear').wpSuperSnow({
+                        flakes: ['https://tuchuang.voooe.cn/images/2023/01/02/yb1.webp', 'https://tuchuang.voooe.cn/images/2023/01/02/yb2.webp', 'https://tuchuang.voooe.cn/images/2023/01/02/yb3.webp'],
+                        totalFlakes: '100',
+                        zIndex: '999999',
+                        maxSize: '30',
+                        maxDuration: '20',
+                        useFlakeTrans: false
+                    });
+                });
+            }
         } else {
             // 大于0则还未过年
-            document.querySelector('#newYear .title').innerHTML = '距离2025年春节：'
+            document.querySelector('#newYear .title').innerHTML = '距离' + nextSpringFestival.getFullYear() + '年春节：';
 
             // 大于一天则直接渲染天数
             if (second > 86400) {
-                document.querySelector('#newYear .newYear-time').innerHTML = `<span class="day">${Math.ceil(second / 86400)}<span class="unit">天</span></span>`
+                document.querySelector('#newYear .newYear-time').innerHTML = `<span class="day">${Math.ceil(second / 86400)}<span class="unit">天</span></span>`;
             } else {
                 // 小于一天则使用时分秒计时。
                 let h = nol(parseInt(second / 3600));
@@ -45,19 +62,8 @@ var newYear = () => {
             }
         }
     }
-
-    // 元宝飘落
-    jQuery(document).ready(function ($) {
-        $('#newYear').wpSuperSnow({
-            flakes: ['https://tuchuang.voooe.cn/images/2023/01/02/yb1.webp', 'https://tuchuang.voooe.cn/images/2023/01/02/yb2.webp', 'https://tuchuang.voooe.cn/images/2023/01/02/yb3.webp'],
-            totalFlakes: '100',
-            zIndex: '999999',
-            maxSize: '30',
-            maxDuration: '20',
-            useFlakeTrans: false
-        });
-    });
 }
+
 // Pjax适配：若没有开启Pjax这里直接是newYear()即可
 // 开了Pjax的用以下两句
 document.addEventListener('pjax:complete', newYear);
